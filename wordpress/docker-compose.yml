@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  mariadb:
+    image: mariadb:10.3.8-bionic
+    volumes:
+      - /usr/local/mariadb/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: wp-danfercf
+      MYSQL_USER: wp-admin-12345
+      MYSQL_PASSWORD: ${MYSQL_USER_PASSWORD}
+    container_name: mariadb
+    ports:
+      - 3308:3306
+    restart: always
+
+  adminer:
+    image: adminer
+    ports:
+      - 9090:8080
+    container_name: adminer
+    restart: always
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+
+  wordpress:
+    image: wordpress:4.9.8-php7.0-apache
+    volumes:
+      - /usr/local/wordpress/:/var/www/html/
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: wp-danfercf
+      WORDPRESS_DB_USER: wp-admin-12345
+      WORDPRESS_DB_PASSWORD: ${MYSQL_USER_PASSWORD}
+    container_name: wordpress
+    ports:
+      - 9000:80
+    restart: always
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
