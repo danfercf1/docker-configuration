@@ -5,6 +5,7 @@ services:
     image: mariadb:10.3.8-bionic
     volumes:
       - /usr/local/mariadb/data:/var/lib/mysql
+    #env_file: /etc/docker-compose/services/wordpress/.env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: wp-danfercf
@@ -30,6 +31,7 @@ services:
     image: wordpress:4.9.8-php7.0-apache
     volumes:
       - /usr/local/wordpress/:/var/www/html/
+    #env_file: /etc/docker-compose/services/wordpress/.env
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: wp-danfercf
@@ -43,3 +45,4 @@ services:
       - mariadb
     links:
       - mariadb
+

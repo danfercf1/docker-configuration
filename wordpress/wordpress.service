@@ -1,0 +1,15 @@
+[Unit]
+Description=Wordpress
+After=docker.service
+
+[Service]
+User=root
+Restart=always
+WorkingDirectory=/etc/docker-compose/services/wordpress
+
+ExecStartPre=/usr/local/bin/docker-compose -f /etc/docker-compose/services/wordpress/docker-compose.yml down
+ExecStart=/usr/local/bin/docker-compose -f /etc/docker-compose/services/wordpress/docker-compose.yml up
+ExecStop=/usr/local/bin/docker-compose -f /etc/docker-compose/services/wordpress/docker-compose.yml down
+
+[Install]
+WantedBy=multi-user.target
